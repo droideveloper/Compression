@@ -5,6 +5,8 @@ buildscript {
     KOTLIN_VERSION = "1.3.11"
     GRADLE_TOOLS_VERSION = "3.3.0"
     SUPPORT_VERSION = "28.0.0"
+    RX_ANDROID_VERSION = "2.0.2"
+    RX_KOTLIN_VERSION = "2.2.0"
   }
   repositories {
     google()
