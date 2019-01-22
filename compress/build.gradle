@@ -22,10 +22,22 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
   }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+}
+
+androidExtensions {
+  experimental = true
 }
 
 dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+  implementation "io.reactivex.rxjava2:rxandroid:$RX_ANDROID_VERSION"
+  implementation "io.reactivex.rxjava2:rxkotlin:$RX_KOTLIN_VERSION"
 
   implementation "com.android.support:appcompat-v7:$SUPPORT_VERSION"
   implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$KOTLIN_VERSION"
