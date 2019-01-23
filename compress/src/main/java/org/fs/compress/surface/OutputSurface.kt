@@ -25,7 +25,6 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import javax.microedition.khronos.egl.*
 
-
 class OutputSurface(
   private val width: Int,
   private val height: Int,

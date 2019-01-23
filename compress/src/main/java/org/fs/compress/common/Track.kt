@@ -16,12 +16,20 @@
 
 package org.fs.compress.common
 
+import android.media.MediaCodec
 import android.media.MediaFormat
 import android.util.SparseIntArray
 import com.coremedia.iso.boxes.AbstractMediaHeaderBox
 import com.coremedia.iso.boxes.SampleDescriptionBox
+import com.coremedia.iso.boxes.SoundMediaHeaderBox
 import com.coremedia.iso.boxes.VideoMediaHeaderBox
+import com.coremedia.iso.boxes.sampleentry.AudioSampleEntry
 import com.coremedia.iso.boxes.sampleentry.VisualSampleEntry
+import com.googlecode.mp4parser.boxes.mp4.ESDescriptorBox
+import com.googlecode.mp4parser.boxes.mp4.objectdescriptors.AudioSpecificConfig
+import com.googlecode.mp4parser.boxes.mp4.objectdescriptors.DecoderConfigDescriptor
+import com.googlecode.mp4parser.boxes.mp4.objectdescriptors.ESDescriptor
+import com.googlecode.mp4parser.boxes.mp4.objectdescriptors.SLConfigDescriptor
 import com.mp4parser.iso14496.part15.AvcConfigurationBox
 import org.fs.compress.model.Sample
 import java.util.*
@@ -32,7 +40,7 @@ class Track(
   companion object {
     private const val DEFAULT_VIDEO_DURATION = 3015L
     private const val DEFAULT_AUDIO_DURATION = 1024L
-    private const val DEFAUTL_TIME_SCALE = 90000L
+    private const val DEFAUTL_TIME_SCALE = 90000
 
     private const val MPEG_V4 = "video/mp4v"
 
@@ -82,7 +90,7 @@ class Track(
 
   var duration = DEFAULT_VIDEO_DURATION
     private set(value) {
-      field = duration
+      field = value
     }
 
   var timeScale = DEFAUTL_TIME_SCALE
@@ -104,6 +112,9 @@ class Track(
 
   val sampleDurations by lazy { ArrayList<Long>() }
   val syncSamples by lazy { LinkedList<Int>() }
+
+  private var lastPresentationTimeUs = 0L
+  private var first = true
 
   init {
     if (!audio) {
@@ -171,7 +182,65 @@ class Track(
         }
       }
     } else {
-      // audio
+      sampleDurations.add(DEFAULT_AUDIO_DURATION)
+      duration = DEFAULT_AUDIO_DURATION
+      handler = HANDLER_AUDIO
+      volume = 1f
+      timeScale = format.getInteger(MediaFormat.KEY_SAMPLE_RATE)
+      headerBox = SoundMediaHeaderBox()
+      sampleDescriptionBox = SampleDescriptionBox()
+      val audioSampleEntry = AudioSampleEntry(AudioSampleEntry.TYPE3)
+      audioSampleEntry.channelCount = format.getInteger(MediaFormat.KEY_CHANNEL_COUNT)
+      audioSampleEntry.sampleRate = format.getLong(MediaFormat.KEY_SAMPLE_RATE)
+      audioSampleEntry.dataReferenceIndex = 1
+      audioSampleEntry.sampleSize = 16
+
+      val esdDescriptionBox = ESDescriptorBox()
+      val esdDescriptor = ESDescriptor()
+      esdDescriptor.esId = 0
+
+      val slConfigDescriptor = SLConfigDescriptor()
+      slConfigDescriptor.predefined = 2
+      esdDescriptor.slConfigDescriptor = slConfigDescriptor
+
+      val decoderConfigDescriptor = DecoderConfigDescriptor()
+      decoderConfigDescriptor.objectTypeIndication = 0x40
+      decoderConfigDescriptor.streamType = 5
+      decoderConfigDescriptor.bufferSizeDB = 1536
+      decoderConfigDescriptor.maxBitRate = 96000
+      decoderConfigDescriptor.avgBitRate = 96000
+
+      val audioSpecificConfig = AudioSpecificConfig()
+      audioSpecificConfig.audioObjectType = 2
+      val samplingRate = audioSampleEntry.sampleRate.toInt()
+      audioSpecificConfig.samplingFrequencyIndex = samplingFrequency[samplingRate]
+      audioSpecificConfig.channelConfiguration = audioSampleEntry.channelCount
+      decoderConfigDescriptor.audioSpecificInfo = audioSpecificConfig
+
+      esdDescriptor.decoderConfigDescriptor = decoderConfigDescriptor
+
+      val data = esdDescriptor.serialize()
+      esdDescriptionBox.esDescriptor = esdDescriptor
+      esdDescriptionBox.data = data
+      audioSampleEntry.addBox(esdDescriptionBox)
+      sampleDescriptionBox?.addBox(audioSampleEntry)
     }
+  }
+
+  fun addSample(offset: Long, bufferInfo: MediaCodec.BufferInfo) {
+    val isSync = !audio && (bufferInfo.flags or MediaCodec.BUFFER_FLAG_KEY_FRAME) != 0
+    samples.add(Sample(offset, bufferInfo.size.toLong()))
+    if (isSync) {
+      syncSamples.add(samples.size)
+    }
+
+    var d = bufferInfo.presentationTimeUs - lastPresentationTimeUs
+    lastPresentationTimeUs = bufferInfo.presentationTimeUs
+    d = (d * timeScale + 500000L) / 1000000L
+    if (!first) {
+      sampleDurations.add(sampleDurations.size - 1, d)
+      duration += d
+    }
+    first = false
   }
 }
