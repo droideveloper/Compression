@@ -16,5 +16,48 @@
 
 package org.fs.compress.model
 
+import android.media.MediaCodec
+import android.media.MediaFormat
+import com.googlecode.mp4parser.util.Matrix
+import org.fs.compress.common.Track
+import java.io.File
+
 class Movie {
+
+  val tracks by lazy { ArrayList<Track>() }
+
+  var matrix = Matrix.ROTATE_0
+    private set(value) {
+      field = value
+    }
+
+  var rotation = 0
+    set(value) {
+      field = value
+      when(value) {
+        0 -> matrix = Matrix.ROTATE_0
+        90 -> matrix = Matrix.ROTATE_90
+        180 -> matrix = Matrix.ROTATE_180
+        270 -> matrix = Matrix.ROTATE_270
+      }
+    }
+
+  var width = 0
+  var height = 0
+
+  var file = File("temp")
+
+  fun addSample(trackId: Int, offset: Long, bufferInfo: MediaCodec.BufferInfo) {
+    if (trackId >= 0 || trackId < tracks.size) {
+      val track = tracks[trackId]
+      track.addSample(offset, bufferInfo)
+    }
+  }
+
+  fun addTrack(format: MediaFormat, isAudio: Boolean): Int {
+    tracks.add(Track(tracks.size, format).apply {
+      audio = isAudio
+    })
+    return tracks.size - 1
+  }
 }
