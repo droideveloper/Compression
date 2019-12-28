@@ -133,9 +133,11 @@ class TextureRenderer: Renderer {
 
   override fun surfaceCreated() {
     program = createProgram(VERTEX_SHADER, FRAGMENT_SHADER)
+
     if (program == 0) {
       throw IllegalArgumentException("can not create egl program $program")
     }
+
     positionPointer = attrPointer(program, ATTR_POSITON)
     texturePointer = attrPointer(program, ATTR_TEXTURE_COORD)
     mvpMatrixPointer = attrUniformPointer(program, ATTR_MVP_MATRIX)
@@ -151,12 +153,15 @@ class TextureRenderer: Renderer {
     GLES20.glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
       GLES20.GL_TEXTURE_MIN_FILTER,
       GLES20.GL_LINEAR)
+
     GLES20.glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
       GLES20.GL_TEXTURE_MAG_FILTER,
       GLES20.GL_LINEAR)
+
     GLES20.glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
       GLES20.GL_TEXTURE_WRAP_S,
       GLES20.GL_CLAMP_TO_EDGE)
+
     GLES20.glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
       GLES20.GL_TEXTURE_WRAP_T,
       GLES20.GL_CLAMP_TO_EDGE)
@@ -201,6 +206,7 @@ class TextureRenderer: Renderer {
 
     GLES20.glLinkProgram(program)
     val status = IntArray(1)
+
     GLES20.glGetProgramiv(program, GLES20.GL_LINK_STATUS, status, 0)
     if (status[0] != GLES20.GL_TRUE) {
       GLES20.glDeleteProgram(program)
