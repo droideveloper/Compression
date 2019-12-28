@@ -172,7 +172,9 @@ class TextureRenderer: Renderer {
     GLES20.glCompileShader(shader)
 
     val status = IntArray(1)
+
     GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, status, 0)
+
     if (status[0] != GLES20.GL_TRUE) {
       GLES20.glDeleteShader(shader)
       shader = 0
