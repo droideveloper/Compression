@@ -3,11 +3,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-  compileSdkVersion 28
+  compileSdkVersion 29
 
   defaultConfig {
-    minSdkVersion 21
-    targetSdkVersion 28
+    minSdkVersion 18
+    targetSdkVersion 29
     versionCode 1
     versionName "1.0"
   }
@@ -36,9 +36,6 @@ androidExtensions {
 dependencies {
   implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-  implementation "io.reactivex.rxjava2:rxandroid:$RX_ANDROID_VERSION"
-  implementation "io.reactivex.rxjava2:rxkotlin:$RX_KOTLIN_VERSION"
-
-  implementation "com.android.support:appcompat-v7:$SUPPORT_VERSION"
+  implementation "androidx.appcompat:appcompat:$ANDROID_X_SUPPORT_VERSION"
   implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$KOTLIN_VERSION"
 }

@@ -1,5 +1,5 @@
 /*
- * Video Compress Android Kotlin Copyright (C) 2018 Fatih, Open Source.
+ * Compression Android Kotlin Copyright (C) 2019 Fatih, Open Source.
  *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-package org.fs.compress.common
+package org.fs.compress.model
 
-import org.fs.compress.model.Movie
+import java.nio.ShortBuffer
 
-class MovieBuilder(private val movie: Movie) {
-  // whats that
+class AudioBuffer {
+
+  var bufferIndex: Int? = null
+  var presentationTimeUs: Long? = null
+  var data: ShortBuffer? = null
 }

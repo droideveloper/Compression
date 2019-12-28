@@ -1,5 +1,5 @@
 /*
- * Video Compress Android Kotlin Copyright (C) 2018 Fatih, Open Source.
+ * Compression Android Kotlin Copyright (C) 2019 Fatih, Open Source.
  *  
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
-package org.fs.compress.model
+package org.fs.compress.util
 
-data class Sample(val offset: Long, val size: Long)
+import java.nio.ByteBuffer
+
+sealed class AvcSps {
+
+  companion object {
+
+    @JvmStatic fun profileIdc(spsBuffer: ByteBuffer): Byte = spsBuffer.get(0)
+  }
+}
