@@ -58,19 +58,24 @@ fun MediaCodec.BufferInfo.toSampleInfo(sampleType: Int): SampleInfo = SampleInfo
 
 fun MediaExtractor.videoAndAudioTrack(): Track {
   var track = Track(videoTrackIndex = -1, audioTrackIndex = -1)
+
   for (i in 0 until trackCount) {
     val format = getTrackFormat(i)
     val mime = format.getString(MediaFormat.KEY_MIME)
+
     if (track.videoTrackIndex < 0 && mime?.startsWith(MIME_VIDEO) == true) {
       track = track.copy(videoTrackIndex = i, videoTrackMime = mime, videoTrackFormat = format)
     } else if (track.audioTrackIndex < 0 && mime?.startsWith(MIME_AUDIO) == true) {
       track = track.copy(audioTrackIndex = i, audioTrackMime = mime, audioTrackFormat = format)
     }
+
     if (track.videoTrackIndex >= 0 && track.audioTrackIndex >= 0) break
   }
+
   if (track.videoTrackIndex < 0 && track.audioTrackIndex < 0) {
     throw IllegalArgumentException("neither video or audio track")
   }
+
   return track
 }
 
