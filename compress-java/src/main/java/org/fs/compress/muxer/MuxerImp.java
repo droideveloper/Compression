@@ -39,7 +39,7 @@ final class MuxerImp implements Muxer {
 
   private MuxerCallback callback;
 
-  private MediaFormat videoFromat;
+  private MediaFormat videoFormat;
   private MediaFormat audioFormat;
 
   private int videoTrackIndex;
@@ -57,7 +57,7 @@ final class MuxerImp implements Muxer {
 
   @Override public void outputFormat(int sampleType, MediaFormat format) {
     if (sampleType == Constants.SAMPLE_VIDEO) {
-      videoFromat = format;
+      videoFormat = format;
     } else if (sampleType == Constants.SAMPLE_AUDIO) {
       audioFormat = format;
     } else {
@@ -67,14 +67,14 @@ final class MuxerImp implements Muxer {
   }
 
   @Override public void dispatchOutputFormatSet() {
-    if (videoFromat != null && audioFormat != null) {
+    if (videoFormat != null && audioFormat != null) {
 
       if (callback != null) {
         callback.determineOutputFormat();
       }
 
-      if (videoFromat != null) {
-        videoTrackIndex = muxer.addTrack(videoFromat);
+      if (videoFormat != null) {
+        videoTrackIndex = muxer.addTrack(videoFormat);
       }
 
       if (audioFormat != null) {
