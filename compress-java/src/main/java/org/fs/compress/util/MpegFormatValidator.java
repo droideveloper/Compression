@@ -19,7 +19,7 @@ import android.media.MediaFormat;
 import android.text.TextUtils;
 import java.nio.ByteBuffer;
 
-import static org.fs.compress.util.Constants.MIMET_YPE_AUDIO_AAC;
+import static org.fs.compress.util.Constants.MIME_TYPE_AUDIO_AAC;
 import static org.fs.compress.util.Constants.MIME_TYPE_VIDEO_AVC;
 
 public final class MpegFormatValidator {
@@ -41,7 +41,7 @@ public final class MpegFormatValidator {
 
   public static void validateAudioOuputFormatOrThrow(MediaFormat audioOutputFormat) {
     String mime = audioOutputFormat.getString(MediaFormat.KEY_MIME);
-    if (!TextUtils.equals(mime, MIMET_YPE_AUDIO_AAC)) {
+    if (!TextUtils.equals(mime, MIME_TYPE_AUDIO_AAC)) {
       throw new IllegalArgumentException("mime type can not be " + mime);
     }
   }

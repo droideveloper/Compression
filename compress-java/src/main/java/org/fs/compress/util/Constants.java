@@ -33,13 +33,17 @@ public final class Constants {
   public static final String KEY_ROTATION_DEGREES = "rotation-degrees";
 
   // Video formats
-  public static final String MIME_TYPE_VIDEO_AVC = "video/avc"; // TODO mpeg implemented yet others should be implemented too
+  public static final String MIME_TYPE_VIDEO_OGG = "video/ogg"; // TODO we might want to find proper mimeType
+  public static final String MIME_TYPE_VIDEO_AVC = "video/avc";
   public static final String MIME_TYPE_VIDEO_H263 = "video/3gpp";
   public static final String MIME_TYPE_VIDEO_VP8 = "video/x-vnd.on2.vp8";
   public static final String MIME_TYPE_VIDEO_VP9 = "video/x-vdn.on2.vp9";
 
   // Audio formats
-  public static final String MIMET_YPE_AUDIO_AAC = "audio/mp4a-latm";
+  public static final String MIME_TYPE_AUDIO_AAC = "audio/mp4a-latm";
+  public static final String MIME_TYPE_AUDIO_VORBIS = "audio/vorbis";
+  public static final String MIME_TYPE_AUDIO_OPUS = "audio/opus";
+  public static final String MIME_TYPE_AUDIO_AMR_NB = "audio/3gpp";
 
   static final String MIME_TYPE_VIDEO = "video/";
   static final String MIME_TYPE_AUDIO = "audio/";
