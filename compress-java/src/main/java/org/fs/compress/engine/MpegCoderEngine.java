@@ -37,8 +37,6 @@ import static org.fs.compress.util.Constants.SAMPLE_VIDEO;
 
 final class MpegCoderEngine implements CoderEngine {
 
-
-
   private Coder videoCoder;
   private Coder audioCoder;
 
