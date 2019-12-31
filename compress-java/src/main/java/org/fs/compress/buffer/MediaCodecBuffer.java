@@ -18,11 +18,12 @@ package org.fs.compress.buffer;
 import android.media.MediaCodec;
 import android.os.Build;
 import java.nio.ByteBuffer;
+import org.fs.compress.util.BuildOsVersionUtil;
 
 public interface MediaCodecBuffer {
 
   static MediaCodecBuffer newInstance(MediaCodec codec) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+    if (BuildOsVersionUtil.isOsAvailable(Build.VERSION_CODES.LOLLIPOP)) {
       return new MediaCodecBufferV21Imp(codec);
     }
     return new MediaCodecBufferImp(codec);
