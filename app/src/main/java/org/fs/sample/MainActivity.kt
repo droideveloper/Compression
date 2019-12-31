@@ -28,8 +28,8 @@ class MainActivity: AppCompatActivity() {
 
   private val compression by lazy { Compression.shared() }
 
-  private val input by lazy { File(filesDir.absolutePath + "/", "sample.mov") }
-  private val output by lazy { File(filesDir.absolutePath + "/", "sample_720p.mov") }
+  private val input by lazy { File(filesDir, "jellyfish_1080p.mp4") }
+  private val output by lazy { File(filesDir, "jellyfish_720p.mp4") }
 
   private var future: Future<*>? = null
 
