@@ -15,10 +15,12 @@
  */
 package org.fs.compress.engine;
 
+import android.annotation.TargetApi;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaMuxer;
+import android.os.Build;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
@@ -27,7 +29,6 @@ import org.fs.compress.data.Track;
 import org.fs.compress.format.MediaFormatStrategy;
 import org.fs.compress.muxer.Muxer;
 import org.fs.compress.util.ExtractorUtil;
-import org.fs.compress.util.MpegFormatValidator;
 import org.fs.compress.util.Utils;
 
 import static android.media.MediaMetadataRetriever.METADATA_KEY_DURATION;
@@ -35,9 +36,8 @@ import static android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION;
 import static org.fs.compress.util.Constants.SAMPLE_AUDIO;
 import static org.fs.compress.util.Constants.SAMPLE_VIDEO;
 
-final class MpegCoderEngine implements CoderEngine {
-
-
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+final class V9CoderEngine implements CoderEngine {
 
   private Coder videoCoder;
   private Coder audioCoder;
@@ -53,13 +53,9 @@ final class MpegCoderEngine implements CoderEngine {
   private final MediaFormatStrategy formatStrategy;
   private final FileDescriptor input;
 
-  MpegCoderEngine(MediaFormatStrategy formatStrategy, FileDescriptor input) {
+  V9CoderEngine(MediaFormatStrategy formatStrategy, FileDescriptor input) {
     this.formatStrategy = formatStrategy;
     this.input = input;
-  }
-
-  @Override public double percentage() {
-    return percentage;
   }
 
   @Override public void callback(CoderEngineCallback callback) {
@@ -95,12 +91,7 @@ final class MpegCoderEngine implements CoderEngine {
     }
     // this will make MediaMuxer#start() call
     Muxer qmuxer = Muxer.newInstance(muxer, () -> {
-      if (videoCoder != null) {
-        MpegFormatValidator.validateVideoOuputFormatOrThrow(videoCoder.determinedFormat());
-      }
-      if (audioCoder != null) {
-        MpegFormatValidator.validateAudioOuputFormatOrThrow(audioCoder.determinedFormat());
-      }
+      // TODO implement output validations
     });
 
     if (track.videoTrackIndex != -1) {
@@ -119,9 +110,13 @@ final class MpegCoderEngine implements CoderEngine {
     }
   }
 
+  @Override public double percentage() {
+    return percentage;
+  }
+
   @Override public void start(File output) throws IOException, InterruptedException {
     try {
-      muxer = new MediaMuxer(output.getAbsolutePath(), MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
+      muxer = new MediaMuxer(output.getAbsolutePath(), MediaMuxer.OutputFormat.MUXER_OUTPUT_WEBM);
       setupMetadata();
       extractor = new MediaExtractor();
       extractor.setDataSource(input);
@@ -197,5 +192,4 @@ final class MpegCoderEngine implements CoderEngine {
       }
     }
   }
-
 }
