@@ -56,7 +56,11 @@ public interface CoderEngine {
         throw new IllegalArgumentException("V9 engine can be used only api Lollipop or above");
       }
     } else if (formatStrategy.isStrategySupported(MIME_TYPE_VIDEO_OGG)) {
-      return new OGGCoderEngine(formatStrategy, input);
+      if (BuildOsVersionUtil.isOsAvailable(Build.VERSION_CODES.Q)) {
+        return new OGGCoderEngine(formatStrategy, input);
+      } else {
+        throw new IllegalArgumentException("OGG engine can be used only api Q or above");
+      }
     }
     throw new IllegalArgumentException("currently we support avc, h263, v8, v9 and ogg strategies only, with dependency on platform api level.");
   }

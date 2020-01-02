@@ -45,6 +45,18 @@ public final class Constants {
   public static final String MIME_TYPE_AUDIO_OPUS = "audio/opus";
   public static final String MIME_TYPE_AUDIO_AMR_NB = "audio/3gpp";
 
+  public static final int VIDEO_BITRATE_1080p = 8192 * 1024;
+  public static final int VIDEO_BITRATE_720p = 4096 * 1024;
+  public static final int VIDEO_BITRATE_480p = 2048 * 1024;
+  public static final int VIDEO_BITRATE_360p = 1024 * 1024;
+
+  public static final int VIDEO_FRAME_RATE_24 = 24; // below 720
+  public static final int VIDEO_FRAME_RATE_25 = 25; // 720
+  public static final int VIDEO_FRAME_RATE_30 = 30; // above 720
+
+  public static final int DEFAULT_AUDIO_CHANNEL = -1;
+  public static final int DEFAULT_AUDIO_BITRATE = -1;
+
   static final String MIME_TYPE_VIDEO = "video/";
   static final String MIME_TYPE_AUDIO = "audio/";
 
