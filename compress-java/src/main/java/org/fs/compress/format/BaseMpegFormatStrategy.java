@@ -54,6 +54,7 @@ abstract class BaseMpegFormatStrategy implements MediaFormatStrategy {
     MediaFormat output = MediaFormat.createVideoFormat(MIME_TYPE_VIDEO_AVC, size.getWidth(), size.getHeight());
     output.setInteger(MediaFormat.KEY_BIT_RATE, videoBitrate);
     output.setInteger(MediaFormat.KEY_FRAME_RATE, videoFrameRate);
+    output.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 0);
     output.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
 
     return output;

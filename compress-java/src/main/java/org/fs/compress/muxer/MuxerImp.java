@@ -26,6 +26,9 @@ import org.fs.compress.data.Sample;
 import org.fs.compress.util.Constants;
 import org.fs.compress.util.SampleUtil;
 
+import static org.fs.compress.util.Constants.SAMPLE_AUDIO;
+import static org.fs.compress.util.Constants.SAMPLE_VIDEO;
+
 final class MuxerImp implements Muxer {
 
   private static final int STATE_IDLE = 0x01;
@@ -56,9 +59,9 @@ final class MuxerImp implements Muxer {
   }
 
   @Override public void outputFormat(int sampleType, MediaFormat format) {
-    if (sampleType == Constants.SAMPLE_VIDEO) {
+    if (sampleType == SAMPLE_VIDEO) {
       videoFormat = format;
-    } else if (sampleType == Constants.SAMPLE_AUDIO) {
+    } else if (sampleType == SAMPLE_AUDIO) {
       audioFormat = format;
     } else {
       throw new IllegalArgumentException("can not determine sample type " + sampleType);
@@ -67,7 +70,7 @@ final class MuxerImp implements Muxer {
   }
 
   @Override public void dispatchOutputFormatSet() {
-    if (videoFormat != null && audioFormat != null) {
+    if (videoFormat != null || audioFormat != null) {
 
       if (callback != null) {
         callback.determineOutputFormat();
@@ -121,9 +124,9 @@ final class MuxerImp implements Muxer {
   }
 
   @Override public int trackIndexForSampleType(int sampleType) {
-    if (sampleType == Constants.SAMPLE_VIDEO) {
+    if (sampleType == SAMPLE_VIDEO) {
       return videoTrackIndex;
-    } else if (sampleType == Constants.SAMPLE_AUDIO) {
+    } else if (sampleType == SAMPLE_AUDIO) {
       return audioTrackIndex;
     } else {
       throw new IllegalArgumentException("can not determine sample type " + sampleType);
