@@ -17,21 +17,29 @@
 package org.fs.sample
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import org.fs.compress.Compression
-import org.fs.compress.common.format.MediaFormatStrategy720p
+import org.fs.compress.CompressionCallback
+import org.fs.compress.format.ScaleMpegFormatStrategy
+import org.fs.compress.util.Constants.*
 import java.io.File
+import java.lang.Exception
 import java.util.concurrent.Future
 
-class MainActivity: AppCompatActivity() {
-
-  private val compression by lazy { Compression.shared() }
+class MainActivity: AppCompatActivity(), CompressionCallback {
 
   private val input by lazy { File(filesDir, "jellyfish_1080p.mp4") }
-  private val output by lazy { File(filesDir, "jellyfish_720p.mp4") }
 
-  private var future: Future<*>? = null
+  private val output720p by lazy { File(filesDir, "jellyfish_720p.mp4") }
+  private val output960x540 by lazy { File(filesDir, "jellyfish_960x540.mp4") }
+
+  private val strategy720p by lazy { ScaleMpegFormatStrategy(0.6666f, VIDEO_BITRATE_720p, VIDEO_FRAME_RATE_24) }
+  private val strategy950x540 by lazy { ScaleMpegFormatStrategy(0.5f, VIDEO_BITRATE_480p, VIDEO_FRAME_RATE_24) }
+
+  private var futurea: Future<*>? = null
+  private var futureb: Future<*>? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -41,13 +49,32 @@ class MainActivity: AppCompatActivity() {
   override fun onStart() {
     super.onStart()
     if (input.exists()) {
-      future = compression.submit(input, output, MediaFormatStrategy720p())
+      val compression = Compression.newInstance()
+      futurea = compression.execute(input, output720p, strategy720p,this)
+      futureb = compression.execute(input, output960x540, strategy950x540, this)
     }
   }
 
   override fun onStop() {
     super.onStop().also {
-      future?.cancel(true)
+      futurea?.cancel(true)
+      futureb?.cancel(true)
     }
+  }
+
+  override fun percentage(percent: Double) {
+    Log.println(Log.ERROR, "percentage", percent.toString())
+  }
+
+  override fun completed() {
+    Log.println(Log.ERROR, "completed", "task")
+  }
+
+  override fun error(throwable: Exception?) {
+    Log.println(Log.ERROR, "failed", throwable.toString())
+  }
+
+  override fun canceled() {
+    Log.println(Log.ERROR, "canceled", "task")
   }
 }

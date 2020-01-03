@@ -26,11 +26,11 @@ public class ScaleMpegFormatStrategy extends BaseMpegFormatStrategy {
 
   private final float scale;
 
-  ScaleMpegFormatStrategy(float scale, int videoBitrate, int videoFrameRate) {
+  public ScaleMpegFormatStrategy(float scale, int videoBitrate, int videoFrameRate) {
     this(scale, videoBitrate, videoFrameRate, DEFAULT_AUDIO_BITRATE, DEFAULT_AUDIO_CHANNEL);
   }
 
-  ScaleMpegFormatStrategy(float scale, int videoBitrate, int videoFrameRate, int audioBitrate, int audioChannel) {
+  public ScaleMpegFormatStrategy(float scale, int videoBitrate, int videoFrameRate, int audioBitrate, int audioChannel) {
     super(videoBitrate, videoFrameRate, audioBitrate, audioChannel);
     this.scale = scale;
   }
