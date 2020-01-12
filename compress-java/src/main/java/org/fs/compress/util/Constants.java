@@ -37,7 +37,7 @@ public final class Constants {
   public static final String MIME_TYPE_VIDEO_AVC = "video/avc";
   public static final String MIME_TYPE_VIDEO_H263 = "video/3gpp";
   public static final String MIME_TYPE_VIDEO_VP8 = "video/x-vnd.on2.vp8";
-  public static final String MIME_TYPE_VIDEO_VP9 = "video/x-vdn.on2.vp9";
+  public static final String MIME_TYPE_VIDEO_VP9 = "video/x-vnd.on2.vp9";
 
   // Audio formats
   public static final String MIME_TYPE_AUDIO_AAC = "audio/mp4a-latm";
@@ -47,6 +47,7 @@ public final class Constants {
 
   public static final int VIDEO_BITRATE_1080p = 8192 * 1024;
   public static final int VIDEO_BITRATE_720p = 4096 * 1024;
+  public static final int VIDEO_BITRATE_950x540 =  3072 * 1024;
   public static final int VIDEO_BITRATE_480p = 2048 * 1024;
   public static final int VIDEO_BITRATE_360p = 1024 * 1024;
 

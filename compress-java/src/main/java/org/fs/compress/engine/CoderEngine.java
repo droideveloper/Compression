@@ -34,7 +34,7 @@ public interface CoderEngine {
   static final long WAIT_CODERS = 10;
   static final long PROGRESS_INTERVAL_STEPS = 10;
 
-  static CoderEngine newIntance(MediaFormatStrategy formatStrategy, FileDescriptor input) {
+  static CoderEngine newInstance(MediaFormatStrategy formatStrategy, FileDescriptor input) {
     if (formatStrategy.isStrategySupported(MIME_TYPE_VIDEO_AVC)) {
       return new MpegCoderEngine(formatStrategy, input);
     } else if (formatStrategy.isStrategySupported(MIME_TYPE_VIDEO_H263)) {

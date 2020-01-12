@@ -22,7 +22,7 @@ import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import org.fs.compress.Compression
 import org.fs.compress.CompressionCallback
-import org.fs.compress.format.ScaleMpegFormatStrategy
+import org.fs.compress.format.ScaleVp8FormatStrategy
 import org.fs.compress.util.Constants.*
 import java.io.File
 import java.lang.Exception
@@ -30,13 +30,13 @@ import java.util.concurrent.Future
 
 class MainActivity: AppCompatActivity(), CompressionCallback {
 
-  private val input by lazy { File(filesDir, "jellyfish_1080p.mp4") }
+  private val input by lazy { File(filesDir, "big_buck_bunny_1080p.webm") }
 
-  private val output720p by lazy { File(filesDir, "jellyfish_720p.mp4") }
-  private val output960x540 by lazy { File(filesDir, "jellyfish_960x540.mp4") }
+  private val output720p by lazy { File(filesDir, "big_buck_bunny_720p.webm") }
+  private val output960x540 by lazy { File(filesDir, "big_buck_bunny_950x540.webm") }
 
-  private val strategy720p by lazy { ScaleMpegFormatStrategy(0.6666f, VIDEO_BITRATE_720p, VIDEO_FRAME_RATE_24) }
-  private val strategy950x540 by lazy { ScaleMpegFormatStrategy(0.5f, VIDEO_BITRATE_480p, VIDEO_FRAME_RATE_24) }
+  private val strategy720p by lazy { ScaleVp8FormatStrategy(0.6666f, VIDEO_BITRATE_720p, VIDEO_FRAME_RATE_30) }
+  private val strategy950x540 by lazy { ScaleVp8FormatStrategy(0.5f, VIDEO_BITRATE_950x540, VIDEO_FRAME_RATE_30) }
 
   private var futurea: Future<*>? = null
   private var futureb: Future<*>? = null

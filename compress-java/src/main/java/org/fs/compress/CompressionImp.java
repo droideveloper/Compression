@@ -97,7 +97,7 @@ final class CompressionImp implements Compression {
     final Future<?> future = executorService.submit(() -> {
       Exception error = null;
       try {
-        CoderEngine engine = CoderEngine.newIntance(formatStrategy, source);
+        CoderEngine engine = CoderEngine.newInstance(formatStrategy, source);
         engine.callback(callback::percentage);
         engine.start(output);
       } catch (IOException e) {
