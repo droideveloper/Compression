@@ -47,10 +47,10 @@ class PassThroughCoder(
 
   init {
     muxer.outputFormat(sampleType, outputFormat)
-    if (outputFormat.containsKey(MediaFormat.KEY_MAX_INPUT_SIZE)) {
-      bufferSize = outputFormat.getInteger(MediaFormat.KEY_MAX_INPUT_SIZE, FALLBACK_BUFFER_SIZE)
+    bufferSize = if (outputFormat.containsKey(MediaFormat.KEY_MAX_INPUT_SIZE)) {
+      outputFormat.getInteger(MediaFormat.KEY_MAX_INPUT_SIZE, FALLBACK_BUFFER_SIZE)
     } else {
-      bufferSize = FALLBACK_BUFFER_SIZE
+      FALLBACK_BUFFER_SIZE
     }
     byteBuffer = ByteBuffer.allocateDirect(bufferSize)
       .order(ByteOrder.nativeOrder())

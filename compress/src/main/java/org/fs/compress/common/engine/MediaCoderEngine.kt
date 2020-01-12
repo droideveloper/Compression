@@ -179,11 +179,11 @@ class MediaCoderEngine {
     val audioOutputValidation = AudioOutputValidation.shared()
 
     val queuedMuxer = QueuedMuxer(muxer, MuxerCallback {
-      if (videoFormat != null) {
-        videoOutputValidation.validate(videoFormat)
+      videoCoder?.let { coder ->
+        videoOutputValidation.validate(coder.format())
       }
-      if (audioFormat != null) {
-        audioOutputValidation.validate(audioFormat)
+      audioCoder?.let { coder ->
+        audioOutputValidation.validate(coder.format())
       }
     })
 

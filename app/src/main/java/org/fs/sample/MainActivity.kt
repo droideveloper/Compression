@@ -17,21 +17,30 @@
 package org.fs.sample
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import org.fs.compress.Compression
-import org.fs.compress.common.format.MediaFormatStrategy720p
+import org.fs.compress.CompressionCallback
+import org.fs.compress.format.MediaFormatStrategyCompat
+import org.fs.compress.format.ScaleV8FormatStrategy
+import org.fs.compress.util.Constants.*
 import java.io.File
+import java.lang.Exception
 import java.util.concurrent.Future
 
-class MainActivity: AppCompatActivity() {
+class MainActivity: AppCompatActivity(), CompressionCallback {
 
-  private val compression by lazy { Compression.shared() }
+  private val input by lazy { File(filesDir, "big_buck_bunny_1080p.webm") }
 
-  private val input by lazy { File(filesDir.absolutePath + "/", "sample.mov") }
-  private val output by lazy { File(filesDir.absolutePath + "/", "sample_720p.mov") }
+  private val output480p by lazy { File(filesDir, "big_buck_bunny_480p.mp4") }
+  private val output360p by lazy { File(filesDir, "big_buck_bunny_360p.mp4") }
 
-  private var future: Future<*>? = null
+  private val strategy480p by lazy { MediaFormatStrategyCompat.new480pMpegStrategy() }
+  private val strategy360p by lazy { MediaFormatStrategyCompat.new360pMpegStrategy() }
+
+  private var futurea: Future<*>? = null
+  private var futureb: Future<*>? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -41,13 +50,32 @@ class MainActivity: AppCompatActivity() {
   override fun onStart() {
     super.onStart()
     if (input.exists()) {
-      future = compression.submit(input, output, MediaFormatStrategy720p())
+      val compression = Compression.newInstance()
+      futurea = compression.execute(input, output480p, strategy480p,this)
+      futureb = compression.execute(input, output360p, strategy360p, this)
     }
   }
 
   override fun onStop() {
     super.onStop().also {
-      future?.cancel(true)
+      futurea?.cancel(true)
+      futureb?.cancel(true)
     }
+  }
+
+  override fun percentage(percent: Double) {
+    Log.println(Log.ERROR, "percentage", percent.toString())
+  }
+
+  override fun completed() {
+    Log.println(Log.ERROR, "completed", "task")
+  }
+
+  override fun error(throwable: Exception?) {
+    Log.println(Log.ERROR, "failed", throwable.toString())
+  }
+
+  override fun canceled() {
+    Log.println(Log.ERROR, "canceled", "task")
   }
 }

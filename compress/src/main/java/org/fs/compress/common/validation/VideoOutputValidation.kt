@@ -39,13 +39,13 @@ class VideoOutputValidation private constructor(): Validation<MediaFormat> {
     val mimeType = obj.getString(MediaFormat.KEY_MIME)
 
     if (mimeType != MIME_TYPE_VIDEO_AVC) {
-      throw IllegalArgumentException("invalid output mime: $mimeType")
+       throw IllegalArgumentException("invalid output mime: $mimeType")
     }
 
     val buffer = AvcCsd.spsBuffer(obj)
     val profileIdc = AvcSps.profileIdc(buffer)
     if (profileIdc != PROFILE_IDC_BASELINE) {
-      throw IllegalArgumentException("invalid AVC profile: $profileIdc")
+       throw IllegalArgumentException("invalid AVC profile: $profileIdc")
     }
   }
 }

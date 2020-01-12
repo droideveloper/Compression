@@ -182,7 +182,7 @@ class VideoCoder(
 
     val result = encoder?.dequeueOutputBuffer(bufferInfo, timeout) ?: -1
     when(result) {
-      MediaCodec.INFO_TRY_AGAIN_LATER -> DRAIN_STATE_NONE
+      MediaCodec.INFO_TRY_AGAIN_LATER -> return DRAIN_STATE_NONE
       MediaCodec.INFO_OUTPUT_FORMAT_CHANGED -> {
         actualOutputFormat = encoder?.outputFormat
         actualOutputFormat?.let { output ->

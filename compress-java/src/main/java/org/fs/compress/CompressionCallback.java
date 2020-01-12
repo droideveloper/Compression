@@ -1,6 +1,6 @@
 /*
- * Compression Android Kotlin Copyright (C) 2019 Fatih, Open Source.
- *  
+ * Compression Android Java Copyright (C) 2020 Fatih, Open Source.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.fs.compress;
 
-package org.fs.compress.compat
+public interface CompressionCallback {
 
-import android.media.MediaCodec
-import java.nio.ByteBuffer
+  void percentage(double percent);
 
-internal class MediaCodecBufferImp(codec: MediaCodec): MediaCodecBuffer {
+  void completed();
 
-  private val inputBuffers = codec.inputBuffers
-  private val outputBuffers = codec.outputBuffers
+  void canceled();
 
-  override fun getInputBuffer(index: Int): ByteBuffer? = inputBuffers[index]
-
-  override fun getOutputBuffer(index: Int): ByteBuffer? = outputBuffers[index]
+  void error(Exception throwable);
 }

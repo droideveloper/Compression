@@ -1,6 +1,6 @@
 /*
- * Compression Android Kotlin Copyright (C) 2019 Fatih, Open Source.
- *  
+ * Open Source Copyright (C) 2020 Fatih, Compression Android Kotlin.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,17 +14,33 @@
  * limitations under the License.
  */
 
-package org.fs.compress.compat
+package org.fs.compress.data;
 
-import android.media.MediaCodec
-import java.nio.ByteBuffer
+public final class Size {
 
-internal class MediaCodecBufferImp(codec: MediaCodec): MediaCodecBuffer {
+  private int width;
+  private int height;
 
-  private val inputBuffers = codec.inputBuffers
-  private val outputBuffers = codec.outputBuffers
+  public Size() { }
 
-  override fun getInputBuffer(index: Int): ByteBuffer? = inputBuffers[index]
+  public Size(int width, int height) {
+    this.width = width;
+    this.height = height;
+  }
 
-  override fun getOutputBuffer(index: Int): ByteBuffer? = outputBuffers[index]
+  public int getHeight() {
+    return height;
+  }
+
+  public int getWidth() {
+    return width;
+  }
+
+  public void setHeight(int height) {
+    this.height = height;
+  }
+
+  public void setWidth(int width) {
+    this.width = width;
+  }
 }
