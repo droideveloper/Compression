@@ -21,15 +21,15 @@ import org.fs.compress.data.Size;
 import static org.fs.compress.util.Constants.DEFAULT_AUDIO_BITRATE;
 import static org.fs.compress.util.Constants.DEFAULT_AUDIO_CHANNEL;
 
-public final class ScaleVp8FormatStrategy extends BaseVp8FormatStrategy {
+public final class ScaleV8FormatStrategy extends BaseV8FormatStrategy {
 
   private final float scale;
 
-  public ScaleVp8FormatStrategy(float scale, int videoBitrate, int videoFrameRate) {
+  public ScaleV8FormatStrategy(float scale, int videoBitrate, int videoFrameRate) {
     this(scale, videoBitrate, videoFrameRate, DEFAULT_AUDIO_BITRATE, DEFAULT_AUDIO_CHANNEL);
   }
 
-  public ScaleVp8FormatStrategy(float scale, int videoBitrate, int videoFrameRate, int audioBitrate, int audioChannel) {
+  public ScaleV8FormatStrategy(float scale, int videoBitrate, int videoFrameRate, int audioBitrate, int audioChannel) {
     super(videoBitrate, videoFrameRate, audioBitrate, audioChannel);
     this.scale = scale;
   }

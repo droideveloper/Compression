@@ -25,7 +25,7 @@ import static org.fs.compress.util.Constants.DEFAULT_AUDIO_CHANNEL;
 import static org.fs.compress.util.Constants.MIME_TYPE_AUDIO_VORBIS;
 import static org.fs.compress.util.Constants.MIME_TYPE_VIDEO_VP8;
 
-abstract class BaseVp8FormatStrategy implements MediaFormatStrategy {
+abstract class BaseV8FormatStrategy implements MediaFormatStrategy {
 
   private final int videoBitrate;
   private final int videoFrameRate;
@@ -33,11 +33,11 @@ abstract class BaseVp8FormatStrategy implements MediaFormatStrategy {
   private final int audioBitrate;
   private final int audioChannel;
 
-  BaseVp8FormatStrategy(int videoBitrate, int videoFrameRate) {
+  BaseV8FormatStrategy(int videoBitrate, int videoFrameRate) {
     this(videoBitrate, videoFrameRate, DEFAULT_AUDIO_BITRATE, DEFAULT_AUDIO_CHANNEL);
   }
 
-  BaseVp8FormatStrategy(int videoBitrate, int videoFrameRate, int audioBitrate, int audioChannel) {
+  BaseV8FormatStrategy(int videoBitrate, int videoFrameRate, int audioBitrate, int audioChannel) {
     this.videoBitrate = videoBitrate;
     this.videoFrameRate = videoFrameRate;
     this.audioBitrate = audioBitrate;

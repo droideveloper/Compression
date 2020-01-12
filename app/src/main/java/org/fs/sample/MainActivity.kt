@@ -22,7 +22,8 @@ import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import org.fs.compress.Compression
 import org.fs.compress.CompressionCallback
-import org.fs.compress.format.ScaleVp8FormatStrategy
+import org.fs.compress.format.MediaFormatStrategyCompat
+import org.fs.compress.format.ScaleV8FormatStrategy
 import org.fs.compress.util.Constants.*
 import java.io.File
 import java.lang.Exception
@@ -32,11 +33,11 @@ class MainActivity: AppCompatActivity(), CompressionCallback {
 
   private val input by lazy { File(filesDir, "big_buck_bunny_1080p.webm") }
 
-  private val output720p by lazy { File(filesDir, "big_buck_bunny_720p.webm") }
-  private val output960x540 by lazy { File(filesDir, "big_buck_bunny_950x540.webm") }
+  private val output480p by lazy { File(filesDir, "big_buck_bunny_480p.mp4") }
+  private val output360p by lazy { File(filesDir, "big_buck_bunny_360p.mp4") }
 
-  private val strategy720p by lazy { ScaleVp8FormatStrategy(0.6666f, VIDEO_BITRATE_720p, VIDEO_FRAME_RATE_30) }
-  private val strategy950x540 by lazy { ScaleVp8FormatStrategy(0.5f, VIDEO_BITRATE_950x540, VIDEO_FRAME_RATE_30) }
+  private val strategy480p by lazy { MediaFormatStrategyCompat.new480pMpegStrategy() }
+  private val strategy360p by lazy { MediaFormatStrategyCompat.new360pMpegStrategy() }
 
   private var futurea: Future<*>? = null
   private var futureb: Future<*>? = null
@@ -50,8 +51,8 @@ class MainActivity: AppCompatActivity(), CompressionCallback {
     super.onStart()
     if (input.exists()) {
       val compression = Compression.newInstance()
-      futurea = compression.execute(input, output720p, strategy720p,this)
-      futureb = compression.execute(input, output960x540, strategy950x540, this)
+      futurea = compression.execute(input, output480p, strategy480p,this)
+      futureb = compression.execute(input, output360p, strategy360p, this)
     }
   }
 
